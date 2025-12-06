@@ -643,14 +643,14 @@
 
     <script>
         // ============================================
-        // CONFIGURATION - Edit this value
+        // CONFIGURATION - n8n Webhook URL
         // ============================================
         
-        // Formspree: Get your free form at formspree.io
-        // Paste your endpoint URL below (looks like: https://formspree.io/f/xyzabc123)
-        const FORMSPREE_URL = 'https://formspree.io/f/mldqlwnb'; // ← Your Formspree endpoint
+        // TEST URL - Use this for testing (change to production when ready)
+        const WEBHOOK_URL = 'http://141.253.125.55:5678/webhook-test/form-submission';
         
-        // That's it! Formspree sends to your email → n8n monitors your inbox → automation
+        // PRODUCTION URL - Uncomment this and comment the test URL when ready to go live
+        // const WEBHOOK_URL = 'http://141.253.125.55:5678/webhook/form-submission';
         
         // ============================================
 
@@ -675,7 +675,7 @@
                 budget_label: "What is your budget?",
                 movein_label: "Move-in date",
                 details_label: "Further details",
-                details_placeholder: "Any specific requirements? Pets, parking, furnished...",
+                details_placeholder: "Garage, pets, other...",
                 submit: "Send Request",
                 success_title: "Thank You!",
                 success_text: "We'll be in touch soon."
@@ -697,7 +697,7 @@
                 budget_label: "Quel est votre budget ?",
                 movein_label: "Date d'emménagement",
                 details_label: "Précisions",
-                details_placeholder: "Besoins spécifiques ? Animaux, parking, meublé...",
+                details_placeholder: "Garage, animaux, autre...",
                 submit: "Envoyer",
                 success_title: "Merci !",
                 success_text: "Nous vous recontactons très vite."
@@ -719,7 +719,7 @@
                 budget_label: "¿Cuál es tu presupuesto?",
                 movein_label: "Fecha de entrada",
                 details_label: "Más detalles",
-                details_placeholder: "¿Requisitos específicos? Mascotas, parking, amueblado...",
+                details_placeholder: "Garaje, mascotas, otro...",
                 submit: "Enviar Solicitud",
                 success_title: "¡Gracias!",
                 success_text: "Te contactamos pronto."
@@ -811,10 +811,10 @@
 
             let success = false;
 
-            // Send to Formspree
-            if (FORMSPREE_URL) {
+            // Send to n8n webhook
+            if (WEBHOOK_URL) {
                 try {
-                    const response = await fetch(FORMSPREE_URL, {
+                    const response = await fetch(WEBHOOK_URL, {
                         method: 'POST',
                         headers: { 
                             'Content-Type': 'application/json',
@@ -824,11 +824,11 @@
                     });
                     success = response.ok;
                 } catch (err) {
-                    console.error('Formspree error:', err);
+                    console.error('Webhook error:', err);
                 }
             } else {
                 // Test mode - no endpoint configured
-                console.log('Form data (configure FORMSPREE_URL to enable):', data);
+                console.log('Form data (configure WEBHOOK_URL to enable):', data);
                 success = true;
             }
 
